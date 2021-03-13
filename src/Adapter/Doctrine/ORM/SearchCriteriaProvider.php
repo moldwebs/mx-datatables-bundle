@@ -46,7 +46,9 @@ class SearchCriteriaProvider implements QueryBuilderProcessorInterface
                         continue;
                     }
                 }
-                $search = $queryBuilder->expr()->literal($search);
+                if ($column->getOperator() == 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
+                $search = $column->getRightExpr($search);
+                if ($column->getOperator() != 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
                 $queryBuilder->andWhere(new Comparison($column->getField(), $column->getOperator(), $search));
             }
         }
