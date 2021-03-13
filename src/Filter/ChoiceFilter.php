@@ -22,6 +22,18 @@ class ChoiceFilter extends AbstractFilter
     /** @var array */
     protected $choices = [];
 
+    public function __construct($options)
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        foreach ($resolver->resolve() as $key => $value) {
+            $this->$key = $value;
+        }
+
+        $this->set($options);
+    }
+
     /**
      * @return $this
      */

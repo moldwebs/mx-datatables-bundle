@@ -10,16 +10,6 @@ class DateRangeFilter extends AbstractFilter
     /** @var string */
     protected $placeholder;
 
-    public function __construct()
-    {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-
-        foreach ($resolver->resolve() as $key => $value) {
-            $this->$key = $value;
-        }
-    }
-
     protected function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);

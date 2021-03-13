@@ -25,6 +25,16 @@ abstract class AbstractFilter
     /** @var string */
     protected $operator;
 
+    public function __construct()
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        foreach ($resolver->resolve() as $key => $value) {
+            $this->$key = $value;
+        }
+    }
+
     public function set(array $options)
     {
         $resolver = new OptionsResolver();
