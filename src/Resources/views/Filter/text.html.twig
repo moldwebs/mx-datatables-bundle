@@ -1,13 +1,12 @@
-<label>
-    <input id="{{ datatable.setting('name') }}-column-{{ column.index }}"
-           data-search-column-index="{{ column.index }}"
-            {% if column.filter.placeholder != null %}
-                placeholder="{{ column.filter.placeholder|trans }}"
-            {% endif %}
-           value="{{ column.searchValue }}">
-    <script>
-        document.getElementById('domains').addEventListener('restore', function (e, data) {
-            console.log(data);
-        });
-    </script>
-</label>
+<div class="form-row">
+    <input id="filter_{{ column.index }}" data-search-column-index="{{ column.index }}" type="search" class="form-control input-sm" placeholder="{{ column.filter.placeholder }}">
+</div>
+
+<script>
+    $('#filter_{{ column.index }}').on('search', function () {
+        $('#dt').dataTable().api()
+            .columns( {{ column.index }} )
+            .search($(this).val(), true, false)
+            .draw();
+    });
+</script>

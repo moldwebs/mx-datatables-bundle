@@ -1,7 +1,9 @@
 <div class="form-row">
-    <select class="form-control input-sm"
+    <select class="form-control input-sm select2entity"
             id="filter_{{ column.index }}"
             data-search-column-index="{{ column.index }}"
+            data-autostart="true"
+            data-ajax--url="{{ column.filter.remote_url }}"
     >
         {% if column.filter.placeholder != null %}
             <option class="placeholder">{{ column.filter.placeholder|trans }}</option>
@@ -13,6 +15,7 @@
 </div>
 
 <script>
+    $('.select2entity[data-autostart="true"]').select2entity();
     $('#filter_{{ column.index }}').change(function (){
         $('#dt').dataTable().api()
             .columns( {{ column.index }} )

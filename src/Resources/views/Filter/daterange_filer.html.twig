@@ -1,0 +1,34 @@
+<div class="form-row">
+    <input id="filter_{{ column.index }}" data-search-column-index="{{ column.index }}" type="text" class="form-control input-sm" placeholder="{{ column.filter.placeholder }}">
+</div>
+{#<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />#}
+<script>
+    $.when(
+        // $.getScript( "https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" ),
+        // $.getScript( "https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" )
+    ).done(function(){
+        $('#filter_{{ column.index }}').daterangepicker({
+            "autoApply": true,
+            "ranges": {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            "linkedCalendars": false,
+            "showCustomRangeLabel": false,
+            "alwaysShowCalendars": true,
+            "autoUpdateInput": false,
+            "opens": 'left'
+        }, function(start, end, label) {
+            $('#dt').dataTable().api()
+                .columns( {{ column.index }} )
+                .search( start.format('YYYY-MM-DD') + ' AND ' + end.format('YYYY-MM-DD') + ' 23:59:59' )
+                .draw();
+            $('#filter_{{ column.index }}').val(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
+            //console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+</script>

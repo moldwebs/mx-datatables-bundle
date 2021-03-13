@@ -1,23 +1,24 @@
 <?php
 
-/*
- * Symfony DataTables Bundle
- * (c) Omines Internetbureau B.V. - https://omines.nl/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-declare(strict_types=1);
 
 namespace Omines\DataTablesBundle\Filter;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TextFilter extends AbstractFilter
+class DateRangeFilter extends AbstractFilter
 {
     /** @var string */
     protected $placeholder;
+
+    public function __construct()
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        foreach ($resolver->resolve() as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 
     protected function configureOptions(OptionsResolver $resolver)
     {
@@ -25,8 +26,8 @@ class TextFilter extends AbstractFilter
 
         $resolver
             ->setDefaults([
-                'template_html' => '@DataTables/Filter/text.html.twig',
-                'placeholder' => null,
+                'template_html' => '@DataTables/Filter/daterange_filer.html.twig',
+                'placeholder' => "Select date period",
             ])
             ->setAllowedTypes('placeholder', ['null', 'string']);
 
@@ -46,6 +47,6 @@ class TextFilter extends AbstractFilter
      */
     public function isValidValue($value): bool
     {
-        return true;
+        return preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} AND [0-9]{4}-[0-9]{2}-[0-9]{2}(| [0-9]{2}\:[0-9]{2}\:[0-9]{2})$/', $value);
     }
 }

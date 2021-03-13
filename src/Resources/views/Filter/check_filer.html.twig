@@ -1,0 +1,23 @@
+<div class="form-row">
+    <select class="form-control input-sm p-0"
+            id="filter_{{ column.index }}"
+    >
+            <option value=""></option>
+            <option name="check_all" value="page" class="placeholder">PAGE: Select page objects</option>
+            <option name="check_all" value="all_pages" class="placeholder">PALL: Select all pages objects</option>
+            <option name="check_all" value="all" class="placeholder">ALL: Select all objects</option>
+    </select>
+</div>
+
+<script>
+    $('#filter_{{ column.index }}').change(function (){
+        if ($(this).val() != '') {
+            $('.check_object').prop('checked', 'checked');
+        } else {
+            $('.check_object').prop('checked', false);
+        }
+    });
+    $(document).on('click', '.check_object', function(){
+        $('#filter_{{ column.index }}').val('');
+    });
+</script>
