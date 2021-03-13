@@ -3,7 +3,6 @@
 namespace Omines\DataTablesBundle\Column;
 
 use Omines\DataTablesBundle\Filter\CheckFilter;
-use Omines\DataTablesBundle\Column\AbstractColumn;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CheckColumn extends AbstractColumn
