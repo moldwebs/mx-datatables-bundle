@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Component\DataTable\Column;
+namespace Omines\DataTablesBundle\Column;
 
-use App\Component\DataTable\Filter\CheckFilter;
-use App\Component\DataTable\Filter\TextFilter;
+use Omines\DataTablesBundle\Filter\CheckFilter;
 use Omines\DataTablesBundle\Column\AbstractColumn;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
