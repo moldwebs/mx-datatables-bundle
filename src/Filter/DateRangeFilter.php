@@ -16,7 +16,7 @@ class DateRangeFilter extends AbstractFilter
 
         $resolver
             ->setDefaults([
-                'template_html' => '@DataTables/Filter/daterange_filer.html.twig',
+                'template_html' => '@DataTables/Filter/daterange_filter.html.twig',
                 'placeholder' => "Select date period",
             ])
             ->setAllowedTypes('placeholder', ['null', 'string']);

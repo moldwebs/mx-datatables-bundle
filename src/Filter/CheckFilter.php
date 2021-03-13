@@ -21,7 +21,7 @@ class CheckFilter extends AbstractFilter
 
         $resolver
             ->setDefaults([
-                'template_html' => '@DataTables/Filter/check_filer.html.twig',
+                'template_html' => '@DataTables/Filter/check_filter.html.twig',
                 'placeholder' => null,
                 'choices' => [],
             ])
