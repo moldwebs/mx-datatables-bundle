@@ -46,6 +46,11 @@ class MapColumn extends TextColumn
             ->setRequired('map')
         ;
 
+        $resolver
+            ->setDefault('operator', '=')
+            ->setDefault(
+                'rightExpr', null);
+
         return $this;
     }
 }

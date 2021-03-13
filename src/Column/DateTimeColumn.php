@@ -63,6 +63,25 @@ class DateTimeColumn extends AbstractColumn
             ->setAllowedTypes('nullValue', 'string')
         ;
 
+        $resolver
+            ->setDefault('operator', 'BETWEEN')
+            ->setDefault(
+                'rightExpr',
+                function ($value) {
+                    return str_replace(" AND ", "' AND '", $value);
+                }
+            );
+
+        $resolver
+            ->setDefault('raw', true)
+            ->setAllowedTypes('raw', 'bool')
+        ;
+
         return $this;
+    }
+
+    public function isValidForSearch($value)
+    {
+        return false;
     }
 }

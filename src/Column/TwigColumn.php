@@ -63,6 +63,15 @@ class TwigColumn extends AbstractColumn
         parent::configureOptions($resolver);
 
         $resolver
+            ->setDefault('operator', 'LIKE')
+            ->setDefault(
+                'rightExpr',
+                function ($value) {
+                    return '%' . $value . '%';
+                }
+            );
+
+        $resolver
             ->setRequired('template')
             ->setAllowedTypes('template', 'string')
         ;
