@@ -74,13 +74,20 @@ class AutomaticQueryBuilder implements QueryBuilderProcessorInterface
     {
         $field = $column->getField();
 
-        // Default to the column name if that corresponds to a field mapping
         if (!isset($field) && isset($this->metadata->fieldMappings[$column->getName()])) {
             $field = $column->getName();
         }
+
         if (null !== $field) {
-            $this->addSelectColumns($column, $field);
+            $fields = explode(',', $field);
+            foreach ($fields as $field) {
+                // Default to the column name if that corresponds to a field mapping
+                if (null !== $field) {
+                    $this->addSelectColumns($column, $field);
+                }
+            }
         }
+
     }
 
     private function addSelectColumns(AbstractColumn $column, string $field)
@@ -148,6 +155,8 @@ class AutomaticQueryBuilder implements QueryBuilderProcessorInterface
     private function setSelectFrom(QueryBuilder $qb)
     {
         foreach ($this->selectColumns as $key => $value) {
+            $qb->addSelect($key);
+            continue;
             if (false === empty($key)) {
                 $qb->addSelect('partial ' . $key . '.{' . implode(',', $value) . '}');
             } else {

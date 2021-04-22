@@ -38,20 +38,28 @@ class SearchCriteriaProvider implements QueryBuilderProcessorInterface
         foreach ($state->getSearchColumns() as $searchInfo) {
             /** @var AbstractColumn $column */
             $column = $searchInfo['column'];
-            $search = $searchInfo['search'];
 
-            if ('' !== trim($search)) {
-                if (null !== ($filter = $column->getFilter())) {
-                    if (!$filter->isValidValue($search)) {
-                        continue;
+            $fields = explode(',', $column->getField());
+            $comparisions = [];
+            foreach ($fields as $key => $field) {
+                $search = $searchInfo['search'];
+
+                if ('' !== trim($search)) {
+                    if (null !== ($filter = $column->getFilter())) {
+                        if (!$filter->isValidValue($search)) {
+                            continue;
+                        }
                     }
+                    if ($column->getOperator() == 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
+                    $search = $column->getRightExpr($search);
+                    if ($column->getOperator() != 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
+                    $comparisions[] = new Comparison($field, $column->getOperator(), $search);
                 }
-                if ($column->getOperator() == 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
-                $search = $column->getRightExpr($search);
-                if ($column->getOperator() != 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
-                $queryBuilder->andWhere(new Comparison($column->getField(), $column->getOperator(), $search));
             }
+            if (!empty($comparisions))
+                $queryBuilder->andWhere($queryBuilder->expr()->orX(...$comparisions));
         }
+//        dd($queryBuilder->getDQL());
     }
 
     private function processGlobalSearch(QueryBuilder $queryBuilder, DataTableState $state)
