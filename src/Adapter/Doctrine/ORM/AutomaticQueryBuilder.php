@@ -81,6 +81,7 @@ class AutomaticQueryBuilder implements QueryBuilderProcessorInterface
         if (null !== $field) {
             $fields = explode(',', $field);
             foreach ($fields as $field) {
+                if (substr_count($field,'.') > 1) continue;
                 // Default to the column name if that corresponds to a field mapping
                 if (null !== $field) {
                     $this->addSelectColumns($column, $field);

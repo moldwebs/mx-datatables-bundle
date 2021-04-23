@@ -50,10 +50,18 @@ class SearchCriteriaProvider implements QueryBuilderProcessorInterface
                             continue;
                         }
                     }
-                    if ($column->getOperator() == 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
-                    $search = $column->getRightExpr($search);
-                    if ($column->getOperator() != 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
-                    $comparisions[] = new Comparison($field, $column->getOperator(), $search);
+
+                    if (substr_count($field,'.') > 1) {
+                        $_field = explode('.', $field);
+                        $comparisions[] = "MEMBEROFCOLUMN(:search_{$_field[0]}_{$_field[1]}_{$_field[2]}, {$_field[0]}.{$_field[1]}, '{$_field[2]}') = 1";
+                        $queryBuilder->setParameter("search_{$_field[0]}_{$_field[1]}_{$_field[2]}", $search);
+                    } else {
+                        if ($column->getOperator() == 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
+                        $search = $column->getRightExpr($search);
+                        if ($column->getOperator() != 'BETWEEN') $search = $queryBuilder->expr()->literal($search);
+                        $comparisions[] = new Comparison($field, $column->getOperator(), $search);
+                    }
+
                 }
             }
             if (!empty($comparisions))
