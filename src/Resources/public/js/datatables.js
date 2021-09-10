@@ -46,7 +46,8 @@
                 method: config.method,
                 data: {
                     _dt: config.name,
-                    _init: true
+                    _init: true,
+                    start: options.displayStart ?? 0
                 }
             }).done(function(data) {
                 var baseState;
